@@ -169,10 +169,12 @@ const JON = 'Jon';
 const ALL_USERS = [...PLAYERS, JON];
 
 const PASSWORDS = {
-  Marcos:'7392', Josa:'4815', Javi:'6023', Rami:'9147',
+  Marcos:'7392', Josa:'4815', JaviRami:'3147',
   Ulloa:'3568', Galo:'8241', Zafra:'1479', Albertito:'5836',
   Diego:'2904', Jon:'6751'
 };
+
+const DEFAULT_HCPS = {Marcos:11.4,Josa:17.4,JaviRami:31.3,Ulloa:26.1,Galo:24.1,Zafra:33.2,Albertito:24.3,Diego:32.7};
 
 const MULTIPLIERS = [1, 1.2, 1.5];
 const HCP_MAX = 36;
@@ -296,7 +298,6 @@ async function loadTab(tab) {
 // ── TAB: MI HCP ───────────────────────────────────────────
 async function tabHcp() {
   const saved = await fbGet(`hcp/${currentUser}`);
-  const DEFAULT_HCPS = {Marcos:11.4,Josa:17.4,JaviRami:31.3,Ulloa:26.1,Galo:24.1,Zafra:33.2,Albertito:24.3,Diego:32.7};
   const val = saved !== null ? saved : (DEFAULT_HCPS[currentUser] || 18);
   setHTML('tab-body', `
     <div class="section-title">Tu Handicap Oficial</div>
@@ -358,13 +359,13 @@ async function tabVote() {
         <div class="card-label">Votos enviados: ${doneCount}/${totalTargets}</div>
         <div class="prog-wrap"><div class="prog-bar" style="width:${Math.round(doneCount/totalTargets*100)}%"></div></div>
         ${targets.map(p => {
-          const official = hcpData[p] !== undefined ? hcpData[p] : '—';
+          const official = hcpData[p] !== undefined ? hcpData[p] : (DEFAULT_HCPS[p] || '—');
           const v = votes[p];
           return `<div class="vote-row">
             <div class="vote-row-top">
               <div class="avatar">${initials(p)}</div>
               <span class="vote-name">${p}</span>
-              <span class="vote-official">Oficial: ${typeof official==='number'?official.toFixed(1):official}</span>
+              <span class="vote-official">Oficial: <strong style="color:var(--green)">${typeof official==='number'?official.toFixed(1):official}</strong></span>
             </div>
             <div class="slider-row">
               <span class="slider-label">0</span>
@@ -608,7 +609,13 @@ function escapeHtml(str) {
 }
 
 // ── BOOT ──────────────────────────────────────────────────
-showLogin();
+async function seedHcps() {
+  const existing = await fbGet('hcp') || {};
+  for(const [player, hcp] of Object.entries(DEFAULT_HCPS)) {
+    if(existing[player] === undefined) await fbSet('hcp/' + player, hcp);
+  }
+}
+seedHcps().then(() => showLogin());
 </script>
 </body>
 </html>
