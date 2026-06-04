@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Shavales Trip 2026 ⛳</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --green:#2D5A1B;--green2:#3a7a24;--green-pale:#e8f4e0;
+  --cream:#f8f4ed;--gold:#c9a227;--gold-light:#f5e07a;
+  --red:#c0392b;--blue:#1a3a7c;--blue-pale:#e8f0fa;
+  --bg:#f4f6f0;--card:#ffffff;--border:#d8ddd0;
+  --text:#1a1a1a;--text2:#5a6a52;--text3:#8a9a82;
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto}
+h1,h2,.bebas{font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+
+/* TOPBAR */
+.topbar{background:var(--green);padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold-light);letter-spacing:2px;line-height:1}
+.topbar-sub{font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px}
+.topbar-right{text-align:right}
+.topbar-user{font-size:13px;font-weight:600;color:white;margin-bottom:4px}
+.btn-logout{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'IBM Plex Sans',sans-serif}
+
+/* CONTENT */
+.content{padding:16px}
+
+/* TABS */
+.tabs{display:flex;gap:3px;background:#dde5d4;border-radius:10px;padding:3px;margin-bottom:16px}
+.tab{flex:1;padding:8px 4px;text-align:center;font-size:12px;font-weight:500;border-radius:7px;cursor:pointer;color:var(--text2);border:none;background:transparent;font-family:'IBM Plex Sans',sans-serif;transition:all 0.15s;line-height:1.2}
+.tab.active{background:white;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px}
+.card-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--green);letter-spacing:1px;margin-bottom:12px}
+
+/* BUTTONS */
+.btn{width:100%;padding:13px;background:var(--green);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:background 0.15s}
+.btn:hover{background:var(--green2)}
+.btn:disabled{opacity:0.45;cursor:default}
+.btn-outline{background:transparent;border:1.5px solid var(--green);color:var(--green)}
+.btn-sm{width:auto;padding:7px 14px;font-size:13px;border-radius:8px}
+
+/* INPUTS */
+input[type=text],input[type=password],input[type=number]{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;background:white;color:var(--text);font-family:'IBM Plex Sans',sans-serif;transition:border 0.15s;-webkit-appearance:none}
+input:focus{outline:none;border-color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green)}
+
+/* LOGIN */
+.login-wrap{padding:24px 16px}
+.login-hero{text-align:center;margin-bottom:24px}
+.login-hero h1{font-size:2.8rem;color:var(--green);line-height:1}
+.login-hero p{font-size:13px;color:var(--text2);margin-top:4px}
+.player-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.player-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;background:white;color:var(--text);transition:all 0.15s;text-align:center;font-family:'IBM Plex Sans',sans-serif}
+.player-btn:active{transform:scale(0.97)}
+.player-btn.selected{border-color:var(--green);background:var(--green-pale);color:var(--green)}
+.jon-btn{border-color:var(--gold)!important;color:#7a5500!important}
+.jon-btn.selected{background:#fffae0!important;border-color:var(--gold)!important}
+.pin-section{margin-top:14px}
+.pin-section label{font-size:13px;color:var(--text2);margin-bottom:6px;display:block}
+.err{color:var(--red);font-size:13px;text-align:center;margin-top:10px;min-height:18px}
+.ok{color:#2a7a1e;font-size:13px;text-align:center;margin-top:8px;min-height:18px}
+
+/* AVATAR */
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--green);flex-shrink:0}
+
+/* VOTE ROW */
+.vote-row{padding:12px 0;border-bottom:1px solid #f0f0eb}
+.vote-row:last-child{border-bottom:none}
+.vote-row-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.vote-name{font-size:14px;font-weight:500;flex:1}
+.vote-official{font-size:12px;color:var(--text3)}
+.slider-row{display:flex;align-items:center;gap:8px}
+.slider-label{font-size:11px;color:var(--text3);min-width:12px}
+.vote-val{min-width:36px;text-align:right;font-size:15px;font-weight:600;color:var(--green)}
+
+/* PROGRESS */
+.prog-wrap{background:#eaede5;border-radius:6px;height:6px;margin-bottom:12px;overflow:hidden}
+.prog-bar{height:100%;background:var(--green);border-radius:6px;transition:width 0.3s}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;line-height:1.4}
+.badge-green{background:var(--green-pale);color:#1a5c0d}
+.badge-amber{background:#fff8e0;color:#7a5500}
+.badge-gray{background:#eaede5;color:var(--text3)}
+.badge-red{background:#fde8e8;color:#8a1a1a}
+
+/* TEAMS */
+.team-card{border-radius:14px;padding:14px;margin-bottom:12px}
+.team-verde{background:var(--green-pale);border:1.5px solid #7bc47a}
+.team-azul{background:var(--blue-pale);border:1.5px solid #7aa0e0}
+.team-title{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:1px;margin-bottom:10px}
+.team-verde .team-title{color:#1a5c0d}
+.team-azul .team-title{color:var(--blue)}
+.player-line{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.07)}
+.player-line:last-child{border-bottom:none}
+.player-line-name{flex:1;font-size:14px;font-weight:500}
+.player-line-hcp{font-size:12px;color:var(--text2)}
+.player-combined{font-size:15px;font-weight:600}
+.team-total{font-size:13px;font-weight:600;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.1)}
+
+/* JON MULT */
+.mult-row{display:flex;gap:6px}
+.mult-btn{flex:1;padding:9px;border:1.5px solid var(--gold);border-radius:8px;background:white;color:#7a5500;font-size:13px;font-weight:600;cursor:pointer;text-align:center;font-family:'IBM Plex Sans',sans-serif;transition:all 0.15s}
+.mult-btn.active{background:var(--gold);color:white}
+
+/* BOCAZAS */
+.bocazas-card{background:#fff8e0;border:1.5px solid var(--gold);border-radius:14px;padding:14px;text-align:center;margin-top:8px}
+.bocazas-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#7a5500;letter-spacing:1px}
+
+/* VESTUARIO */
+.msg-bubble{background:#f4f6f0;border-radius:10px;padding:10px 13px;margin-bottom:8px}
+.msg-text{font-size:14px;color:var(--text)}
+.msg-meta{font-size:11px;color:var(--text3);margin-top:4px}
+.msg-form{display:flex;gap:8px;margin-top:12px}
+.msg-form input{flex:1;padding:11px 13px}
+.msg-send{padding:11px 16px;background:var(--green);color:white;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-family:'IBM Plex Sans',sans-serif;white-space:nowrap}
+
+/* LOCKED */
+.locked{text-align:center;padding:24px 16px;color:var(--text2)}
+.lock-emoji{font-size:2.5rem;display:block;margin-bottom:8px}
+
+/* SPINNER */
+.spinner{text-align:center;padding:32px;color:var(--text3);font-size:14px}
+
+/* INFO BOX */
+.info-box{background:#fff8e0;border:1px solid #e8c840;border-radius:10px;padding:10px 13px;font-size:13px;color:#7a5500;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">⛳ SHAVALES 2026</div>
+      <div class="topbar-sub">El Clasificador Supremo™</div>
+    </div>
+    <div id="topbar-right"></div>
+  </div>
+  <div id="main"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD0NNtdzXZxxKnnrcTufTWPqK1fUwQsVXE",
+  authDomain: "shavales-trip-2026.firebaseapp.com",
+  databaseURL: "https://shavales-trip-2026-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "shavales-trip-2026",
+  storageBucket: "shavales-trip-2026.firebasestorage.app",
+  messagingSenderId: "110817557147",
+  appId: "1:110817557147:web:0ffd7886ab1d43fd95243e"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+
+// ── CONFIG ────────────────────────────────────────────────
+const PLAYERS = ["Marcos","Josa","JaviRami","Ulloa","Galo","Zafra","Albertito","Diego"];
+const JON = 'Jon';
+const ALL_USERS = [...PLAYERS, JON];
+
+const PASSWORDS = {
+  Marcos:'7392', Josa:'4815', Javi:'6023', Rami:'9147',
+  Ulloa:'3568', Galo:'8241', Zafra:'1479', Albertito:'5836',
+  Diego:'2904', Jon:'6751'
+};
+
+const MULTIPLIERS = [1, 1.2, 1.5];
+const HCP_MAX = 36;
+const JON_DELTA_LIMIT = 10;
+
+// ── STATE ─────────────────────────────────────────────────
+let currentUser = null;
+
+// ── FIREBASE HELPERS ──────────────────────────────────────
+async function fbGet(path) {
+  try {
+    const snap = await get(child(ref(db), path));
+    return snap.exists() ? snap.val() : null;
+  } catch(e) { console.error(e); return null; }
+}
+async function fbSet(path, val) {
+  try { await set(ref(db, path), val); } catch(e) { console.error(e); }
+}
+
+// ── UTILS ─────────────────────────────────────────────────
+function initials(n) { return n.slice(0,2).toUpperCase(); }
+function clamp(v, mn, mx) { return Math.max(mn, Math.min(mx, v)); }
+
+function setHTML(id, html) {
+  const el = document.getElementById(id);
+  if(el) el.innerHTML = html;
+}
+
+// ── TOPBAR ────────────────────────────────────────────────
+function setTopbar() {
+  if(!currentUser) { setHTML('topbar-right',''); return; }
+  setHTML('topbar-right', `
+    <div class="topbar-right">
+      <div class="topbar-user">${currentUser}${currentUser===JON?' 🎲':''}</div>
+      <button class="btn-logout" id="btn-logout">Salir</button>
+    </div>`);
+  document.getElementById('btn-logout').onclick = () => { currentUser=null; showLogin(); };
+}
+
+// ── SCREENS ───────────────────────────────────────────────
+
+// LOGIN
+function showLogin() {
+  setTopbar();
+  let sel = null;
+  const draw = (err='') => {
+    setHTML('main', `
+      <div class="login-wrap">
+        <div class="login-hero">
+          <h1>⛳ SHAVALES<br>TRIP 2026</h1>
+          <p>Elige tu nombre e introduce tu PIN</p>
+        </div>
+        <div class="player-grid">
+          ${PLAYERS.map(p=>`
+            <button class="player-btn${sel===p?' selected':''}" data-player="${p}">${p}</button>
+          `).join('')}
+        </div>
+        <button class="player-btn jon-btn${sel===JON?' selected':''}" style="width:100%;margin-bottom:14px" data-player="${JON}">
+          🎲 Jon — Voto Loco
+        </button>
+        <div class="pin-section">
+          <label>PIN de acceso (4 dígitos)</label>
+          <input type="password" id="pin" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn" id="btn-enter">ENTRAR AL CAMPO</button>
+        </div>
+        <div class="err">${err}</div>
+      </div>`);
+
+    document.querySelectorAll('[data-player]').forEach(btn => {
+      btn.onclick = () => { sel = btn.dataset.player; draw(); };
+    });
+    document.getElementById('pin').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+    document.getElementById('btn-enter').onclick = tryLogin;
+  };
+
+  const tryLogin = () => {
+    const pin = document.getElementById('pin').value.trim();
+    if(!sel) { draw('Elige un jugador'); return; }
+    if(PASSWORDS[sel] !== pin) { draw('PIN incorrecto'); return; }
+    currentUser = sel;
+    setTopbar();
+    showApp();
+  };
+  draw();
+}
+
+// APP SHELL
+function showApp() {
+  const isJon = currentUser === JON;
+  const tabs = isJon
+    ? [{id:'vote',label:'Mis Votos'},{id:'teams',label:'Equipos'},{id:'vestuario',label:'Vestuario'}]
+    : [{id:'hcp',label:'Mi HCP'},{id:'vote',label:'Votar'},{id:'teams',label:'Equipos'},{id:'vestuario',label:'Vestuario'}];
+
+  let active = tabs[0].id;
+
+  const drawShell = () => {
+    setHTML('main', `
+      <div class="content">
+        <div class="tabs">
+          ${tabs.map(t=>`<button class="tab${t.id===active?' active':''}" data-tab="${t.id}">${t.label}</button>`).join('')}
+        </div>
+        <div id="tab-body"><div class="spinner">Cargando...</div></div>
+      </div>`);
+    document.querySelectorAll('[data-tab]').forEach(btn => {
+      btn.onclick = () => { active = btn.dataset.tab; drawShell(); loadTab(active); };
+    });
+    loadTab(active);
+  };
+  drawShell();
+}
+
+async function loadTab(tab) {
+  if(tab==='hcp') await tabHcp();
+  else if(tab==='vote') await tabVote();
+  else if(tab==='teams') await tabTeams();
+  else if(tab==='vestuario') await tabVestuario();
+}
+
+// ── TAB: MI HCP ───────────────────────────────────────────
+async function tabHcp() {
+  const saved = await fbGet(`hcp/${currentUser}`);
+  const val = saved !== null ? saved : 18;
+  setHTML('tab-body', `
+    <div class="section-title">Tu Handicap Oficial</div>
+    <div class="card">
+      <div class="card-label">HCP exacto (EGA, máx 36)</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+        <input type="number" id="hcp-val" min="0" max="36" step="0.1" value="${val}" style="flex:1">
+        <span style="font-size:22px;font-weight:600;color:var(--green);min-width:44px;text-align:center" id="hcp-show">${parseFloat(val).toFixed(1)}</span>
+      </div>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Este dato es público. Junto con los votos subjetivos de tus compañeros determina los equipos.</p>
+      <button class="btn" id="save-hcp">GUARDAR</button>
+      <div class="ok" id="hcp-ok"></div>
+    </div>`);
+
+  document.getElementById('hcp-val').oninput = function() {
+    document.getElementById('hcp-show').textContent = parseFloat(this.value||0).toFixed(1);
+  };
+  document.getElementById('save-hcp').onclick = async () => {
+    const v = parseFloat(document.getElementById('hcp-val').value)||0;
+    const clamped = clamp(v, 0, HCP_MAX);
+    await fbSet(`hcp/${currentUser}`, clamped);
+    document.getElementById('hcp-ok').textContent = '✅ Guardado';
+    setTimeout(()=>{ const el=document.getElementById('hcp-ok'); if(el) el.textContent=''; }, 2000);
+  };
+}
+
+// ── TAB: VOTAR ────────────────────────────────────────────
+async function tabVote() {
+  const isJon = currentUser === JON;
+  const targets = isJon ? PLAYERS : PLAYERS.filter(p=>p!==currentUser);
+
+  // Load all hcps and existing votes
+  const hcpData = await fbGet('hcp') || {};
+  const myVotes = await fbGet(`votes/${currentUser}`) || {};
+  // Load Jon multiplier preference for current user (only relevant for non-Jon)
+  const myJonMult = isJon ? 1 : (await fbGet(`jon_mult/${currentUser}`) || 1);
+
+  const votes = {};
+  targets.forEach(p => {
+    votes[p] = myVotes[p] !== undefined ? myVotes[p] : (hcpData[p]||18);
+  });
+
+  const doneCount = Object.keys(myVotes).filter(k => targets.includes(k)).length;
+  const totalTargets = targets.length;
+
+  const draw = () => {
+    setHTML('tab-body', `
+      <div class="section-title">Handicap Subjetivo${isJon?' 🎲':''}</div>
+      ${isJon ? `<div class="info-box">⚠️ Eres Jon. Tus votos se suman a la media subjetiva de cada jugador, pero cada uno decide el multiplicador con el que cuenta tu delta. Úsalo con sabiduría o sin ella.</div>` : ''}
+      ${!isJon ? `
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-label">Multiplicador del Voto de Jon para ti</div>
+          <p style="font-size:12px;color:var(--text3);margin-bottom:10px">Si Jon vota diferente a tu HCP oficial, ¿cuánto amplifica esa diferencia?</p>
+          <div class="mult-row" id="mult-row">
+            ${MULTIPLIERS.map(m=>`<button class="mult-btn${myJonMult==m?' active':''}" data-mult="${m}">×${m}</button>`).join('')}
+          </div>
+        </div>` : ''}
+      <div class="card">
+        <div class="card-label">Votos enviados: ${doneCount}/${totalTargets}</div>
+        <div class="prog-wrap"><div class="prog-bar" style="width:${Math.round(doneCount/totalTargets*100)}%"></div></div>
+        ${targets.map(p => {
+          const official = hcpData[p] !== undefined ? hcpData[p] : '—';
+          const v = votes[p];
+          return `<div class="vote-row">
+            <div class="vote-row-top">
+              <div class="avatar">${initials(p)}</div>
+              <span class="vote-name">${p}</span>
+              <span class="vote-official">Oficial: ${typeof official==='number'?official.toFixed(1):official}</span>
+            </div>
+            <div class="slider-row">
+              <span class="slider-label">0</span>
+              <input type="range" min="0" max="36" step="0.5" value="${v}"
+                data-player="${p}"
+                oninput="document.getElementById('vv_${p}').textContent=parseFloat(this.value).toFixed(1);window._gvotes['${p}']=parseFloat(this.value)">
+              <span class="slider-label">36</span>
+              <span class="vote-val" id="vv_${p}">${parseFloat(v).toFixed(1)}</span>
+            </div>
+          </div>`;
+        }).join('')}
+        <button class="btn" style="margin-top:14px" id="save-votes">ENVIAR MIS VOTOS</button>
+        <div class="ok" id="vote-ok"></div>
+      </div>`);
+
+    window._gvotes = {...votes};
+
+    // Jon mult buttons
+    if(!isJon) {
+      document.querySelectorAll('[data-mult]').forEach(btn => {
+        btn.onclick = async () => {
+          const m = parseFloat(btn.dataset.mult);
+          await fbSet(`jon_mult/${currentUser}`, m);
+          document.querySelectorAll('[data-mult]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        };
+      });
+    }
+
+    document.getElementById('save-votes').onclick = async () => {
+      await fbSet(`votes/${currentUser}`, window._gvotes);
+      document.getElementById('vote-ok').textContent = '✅ Votos guardados';
+      setTimeout(()=>{ const el=document.getElementById('vote-ok'); if(el) el.textContent=''; }, 2000);
+    };
+  };
+  draw();
+}
+
+// ── TAB: EQUIPOS ──────────────────────────────────────────
+async function tabTeams() {
+  setHTML('tab-body', '<div class="spinner">Calculando...</div>');
+
+  // Check who has voted
+  const allVotes = await fbGet('votes') || {};
+  const hcpData = await fbGet('hcp') || {};
+
+  const votedStatus = {};
+  ALL_USERS.forEach(u => {
+    const vv = allVotes[u];
+    const targets = u === JON ? PLAYERS : PLAYERS.filter(p => p !== u);
+    votedStatus[u] = vv && targets.every(t => vv[t] !== undefined);
+  });
+
+  const allVoted = ALL_USERS.every(u => votedStatus[u]);
+
+  // Status badges
+  let statusHtml = '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">';
+  PLAYERS.forEach(p => {
+    statusHtml += `<span class="badge ${votedStatus[p]?'badge-green':'badge-gray'}">${p} ${votedStatus[p]?'✓':'⏳'}</span>`;
+  });
+  statusHtml += `<span class="badge ${votedStatus[JON]?'badge-amber':'badge-gray'}">🎲 Jon ${votedStatus[JON]?'✓':'⏳'}</span>`;
+  statusHtml += '</div>';
+
+  if(!allVoted) {
+    const pending = ALL_USERS.filter(u => !votedStatus[u]);
+    setHTML('tab-body', `
+      <div class="section-title">Equipos</div>
+      <div class="card">
+        <div class="card-label">Estado de votos</div>
+        ${statusHtml}
+        <div class="locked">
+          <span class="lock-emoji">🔒</span>
+          Los equipos se revelan cuando todos hayan votado.
+          <div style="font-size:13px;margin-top:8px;color:var(--text3)">Pendientes: ${pending.join(', ')}</div>
+        </div>
+      </div>`);
+    return;
+  }
+
+  // ── CALCULATE ──────────────────────────────────────────
+  // Jon mult per player
+  const jonMultData = await fbGet('jon_mult') || {};
+
+  // For each player: collect all votes, apply Jon logic, compute combined HCP
+  const subjScores = {};
+  const combined = {};
+
+  PLAYERS.forEach(player => {
+    const officialHcp = hcpData[player] !== undefined ? hcpData[player] : 18;
+    const minAllowed = officialHcp - JON_DELTA_LIMIT;
+    const maxAllowed = officialHcp + JON_DELTA_LIMIT;
+
+    // Regular votes (excluding self, excluding Jon)
+    const regularVoters = PLAYERS.filter(v => v !== player);
+    let totalSubj = 0;
+    let countSubj = 0;
+    regularVoters.forEach(voter => {
+      const vv = allVotes[voter];
+      if(vv && vv[player] !== undefined) {
+        totalSubj += vv[player];
+        countSubj++;
+      }
+    });
+
+    // Jon vote with multiplier chosen by this player
+    const jonVote = allVotes[JON] && allVotes[JON][player] !== undefined ? allVotes[JON][player] : null;
+    let jonEffective = null;
+    if(jonVote !== null) {
+      const jonMult = jonMultData[player] || 1;
+      const delta = jonVote - officialHcp;
+      const amplifiedDelta = delta * jonMult;
+      jonEffective = officialHcp + amplifiedDelta;
+      // Clamp Jon's effective vote to ±10 of official
+      jonEffective = clamp(jonEffective, minAllowed, maxAllowed);
+      totalSubj += jonEffective;
+      countSubj++;
+    }
+
+    const avgSubj = countSubj > 0 ? totalSubj / countSubj : officialHcp;
+    // Clamp final average to ±10 of official
+    const clampedSubj = clamp(avgSubj, minAllowed, maxAllowed);
+    subjScores[player] = clampedSubj;
+
+    // Combined = mean of official and clamped subjective average
+    combined[player] = (officialHcp + clampedSubj) / 2;
+  });
+
+  // Snake draft to form balanced teams
+  const sorted = [...PLAYERS].sort((a, b) => combined[b] - combined[a]);
+  const teamA = [], teamB = [];
+  sorted.forEach((p, i) => {
+    const round = Math.floor(i / 2);
+    const pos = i % 2;
+    if(round % 2 === 0) { pos === 0 ? teamA.push(p) : teamB.push(p); }
+    else { pos === 0 ? teamB.push(p) : teamA.push(p); }
+  });
+
+  // El Bocazas: voter whose votes deviated most from consensus
+  const deviations = {};
+  ALL_USERS.forEach(voter => {
+    const vv = allVotes[voter];
+    if(!vv) return;
+    let totalDev = 0, cnt = 0;
+    PLAYERS.forEach(player => {
+      if(player === voter) return;
+      if(vv[player] === undefined) return;
+      const official = hcpData[player] !== undefined ? hcpData[player] : 18;
+      let voterVal = vv[player];
+      if(voter === JON) {
+        // Compare jon's amplified effective vote vs plain consensus
+        const jonMult = jonMultData[player] || 1;
+        const delta = voterVal - official;
+        voterVal = clamp(official + delta * jonMult, official - JON_DELTA_LIMIT, official + JON_DELTA_LIMIT);
+      }
+      totalDev += Math.abs(voterVal - subjScores[player]);
+      cnt++;
+    });
+    if(cnt > 0) deviations[voter] = totalDev / cnt;
+  });
+  const bocazas = Object.entries(deviations).sort((a,b) => b[1]-a[1])[0];
+
+  const renderPlayer = (p) => {
+    const off = hcpData[p] !== undefined ? hcpData[p] : '?';
+    return `<div class="player-line">
+      <div class="avatar" style="width:32px;height:32px;font-size:12px">${initials(p)}</div>
+      <span class="player-line-name">${p}</span>
+      <span class="player-line-hcp">HCP ${typeof off==='number'?off.toFixed(1):off} → ${subjScores[p].toFixed(1)}</span>
+      <span class="player-combined" style="margin-left:8px">${combined[p].toFixed(1)}</span>
+    </div>`;
+  };
+
+  const totalA = teamA.reduce((s,p)=>s+combined[p],0);
+  const totalB = teamB.reduce((s,p)=>s+combined[p],0);
+
+  setHTML('tab-body', `
+    <div class="section-title">Equipos</div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-label">Estado de votos</div>
+      ${statusHtml}
+    </div>
+    <div class="team-card team-verde">
+      <div class="team-title">🟢 EQUIPO VERDE</div>
+      ${teamA.map(renderPlayer).join('')}
+      <div class="team-total">Total combinado: ${totalA.toFixed(1)}</div>
+    </div>
+    <div class="team-card team-azul">
+      <div class="team-title">🔵 EQUIPO AZUL</div>
+      ${teamB.map(renderPlayer).join('')}
+      <div class="team-total">Total combinado: ${totalB.toFixed(1)}</div>
+    </div>
+    <div class="info-box" style="font-size:12px;margin-top:4px">
+      HCP mostrado: oficial → media subjetiva. Combinado = media de ambos.
+    </div>
+    ${bocazas ? `
+    <div class="bocazas-card">
+      <div style="font-size:11px;font-weight:600;letter-spacing:1px;color:#8a6b00;margin-bottom:2px">🗣 EL BOCAZAS DEL VIAJE</div>
+      <div class="bocazas-name">${bocazas[0]}</div>
+      <div style="font-size:12px;color:#7a5500;margin-top:4px">Votó más alejado del consenso (${bocazas[1].toFixed(2)} pts de desviación media)</div>
+    </div>` : ''}
+  `);
+}
+
+// ── TAB: VESTUARIO ────────────────────────────────────────
+async function tabVestuario() {
+  const msgs = await fbGet('vestuario') || [];
+  const msgsArr = Array.isArray(msgs) ? msgs : Object.values(msgs);
+
+  setHTML('tab-body', `
+    <div class="section-title">Vestuario ⚡</div>
+    <div class="card">
+      <div class="card-label">Muro anónimo — di lo que quieras</div>
+      <div id="msg-list">
+        ${msgsArr.length === 0
+          ? '<div style="color:var(--text3);font-size:13px;padding:6px 0">El vestuario está en silencio... de momento.</div>'
+          : msgsArr.map(m=>`<div class="msg-bubble"><div class="msg-text">${escapeHtml(m.text)}</div><div class="msg-meta">— Anónimo · ${m.time}</div></div>`).join('')
+        }
+      </div>
+      <div class="msg-form">
+        <input type="text" id="msg-in" placeholder="Suelta algo..." maxlength="140">
+        <button class="msg-send" id="msg-send-btn">Enviar</button>
+      </div>
+    </div>`);
+
+  document.getElementById('msg-in').addEventListener('keydown', e => { if(e.key==='Enter') sendMsg(); });
+  document.getElementById('msg-send-btn').onclick = sendMsg;
+
+  async function sendMsg() {
+    const txt = document.getElementById('msg-in').value.trim();
+    if(!txt) return;
+    const existing = await fbGet('vestuario') || [];
+    const arr = Array.isArray(existing) ? existing : Object.values(existing);
+    const now = new Date();
+    arr.push({ text: txt, time: `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}` });
+    await fbSet('vestuario', arr);
+    await tabVestuario();
+  }
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── BOOT ──────────────────────────────────────────────────
+showLogin();
+</script>
+</body>
+</html>
