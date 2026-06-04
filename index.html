@@ -296,7 +296,8 @@ async function loadTab(tab) {
 // ── TAB: MI HCP ───────────────────────────────────────────
 async function tabHcp() {
   const saved = await fbGet(`hcp/${currentUser}`);
-  const val = saved !== null ? saved : 18;
+  const DEFAULT_HCPS = {Marcos:11.4,Josa:17.4,JaviRami:31.3,Ulloa:26.1,Galo:24.1,Zafra:33.2,Albertito:24.3,Diego:32.7};
+  const val = saved !== null ? saved : (DEFAULT_HCPS[currentUser] || 18);
   setHTML('tab-body', `
     <div class="section-title">Tu Handicap Oficial</div>
     <div class="card">
