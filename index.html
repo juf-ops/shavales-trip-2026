@@ -549,12 +549,12 @@ async function tabTeams() {
     <div class="team-card team-verde">
       <div class="team-title">🟢 EQUIPO VERDE</div>
       ${teamA.map(renderPlayer).join('')}
-      <div class="team-total">Total combinado: ${totalA.toFixed(1)}</div>
+      <div class="team-total">HCP medio: ${(totalA/teamA.length).toFixed(1)}</div>
     </div>
     <div class="team-card team-azul">
       <div class="team-title">🔵 EQUIPO AZUL</div>
       ${teamB.map(renderPlayer).join('')}
-      <div class="team-total">Total combinado: ${totalB.toFixed(1)}</div>
+      <div class="team-total">HCP medio: ${(totalB/teamB.length).toFixed(1)}</div>
     </div>
     <div class="info-box" style="font-size:12px;margin-top:4px">
       HCP mostrado: oficial → media subjetiva. Combinado = media de ambos.
